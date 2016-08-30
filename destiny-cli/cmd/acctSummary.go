@@ -15,7 +15,8 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -26,10 +27,24 @@ var acctSummaryCmd = &cobra.Command{
 	Short: "get a summary of an account",
 	Long:  "get a summary of an account",
 	Run: func(cmd *cobra.Command, args []string) {
-		member, _ := api.Memberships(args[0])
-		member.AccountSummary()
-		// TODO: Work your own magic here
-		fmt.Println("acctSummary called")
+		for idx, member := range args {
+			if idx != 0 {
+				os.Stdout.Write([]byte("\n"))
+			}
+			membership, err := api.Memberships(member)
+			if err != nil {
+				os.Stdout.Write([]byte("{}"))
+				log.Println(err.Error())
+				continue
+			}
+			buf, err := membership.RawAccountSummary()
+			if err != nil {
+				log.Println(err.Error())
+				os.Stdout.Write([]byte("{}"))
+				continue
+			}
+			os.Stdout.Write(buf)
+		}
 	},
 }
 

@@ -94,9 +94,23 @@ func (c *Client) getAndUnwrap(url string, into interface{}) (bool, error) {
 	if !e.success() {
 		return false, e
 	}
-	err = json.Unmarshal(e.Response, &into)
+	return true, e.into(&into)
+}
+
+func (c *Client) getAndUnwrapData(url string, into interface{}) (bool, error) {
+	rsp, err := c.Get(url)
+	defer rsp.Body.Close()
 	if err != nil {
-		return true, err
+		return false, err
 	}
-	return true, nil
+	var e *envelope
+	err = json.NewDecoder(rsp.Body).Decode(&e)
+	if err != nil {
+		return false, err
+	}
+	data, err := e.data()
+	if err != nil {
+		return false, err
+	}
+	return true, data.into(&into)
 }
