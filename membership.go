@@ -1,7 +1,6 @@
 package destiny
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -43,25 +42,13 @@ func (m *Membership) Member() *Member {
 }
 
 func (p *Platform) Memberships(displayName string) (*Membership, error) {
-	rsp, err := p.Get(
-		fmt.Sprintf("%s/SearchDestinyPlayer/%d/%s/", p.Base, p.ID, displayName),
-	)
-	if err != nil {
-		return nil, err
-	}
-	defer rsp.Body.Close()
-	var e *envelope
-	err = json.NewDecoder(rsp.Body).Decode(&e)
-	if err != nil {
-		return nil, err
-	}
-	if !e.success() {
-		return nil, e
-	}
 	var rval []*Membership
-	err = json.Unmarshal(e.Response, &rval)
+	success, err := p.getAndUnwrap(fmt.Sprintf("%s/SearchDestinyPlayer/%d/%s/", p.Base, p.ID, displayName), &rval)
 	if err != nil {
 		return nil, err
+	}
+	if !success {
+		return nil, fmt.Errorf("Failed response from API")
 	}
 	for _, m := range rval {
 		if m.Platform != p.ID {

@@ -1,11 +1,16 @@
 package destiny
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
+	"os"
 	"strings"
 )
+
+var Debug = false
 
 type Client struct {
 	*http.Client
@@ -52,7 +57,14 @@ func (c *Client) PostForm(url string, data url.Values) (resp *http.Response, err
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	req.Header.Set("X-API-Key", c.key)
 	req.Header.Set("User-Agent", "github.com/FederationOfFathers/lib-destiny")
-	return c.Client.Do(req)
+	rsp, err := c.Client.Do(req)
+	if Debug {
+		buf, _ := httputil.DumpRequest(req, true)
+		os.Stderr.Write(buf)
+		buf2, _ := httputil.DumpResponse(rsp, true)
+		os.Stderr.Write(buf2)
+	}
+	return rsp, err
 }
 
 // New returns a new Client which is an http.Client which embeds the
@@ -65,4 +77,26 @@ func New(APIKey string, httpClient *http.Client) *Client {
 		Client: httpClient,
 		key:    APIKey,
 	}
+}
+
+func (c *Client) getAndUnwrap(url string, into interface{}) (bool, error) {
+	rsp, err := c.Get(url)
+	defer rsp.Body.Close()
+
+	if err != nil {
+		return false, err
+	}
+	var e *envelope
+	err = json.NewDecoder(rsp.Body).Decode(&e)
+	if err != nil {
+		return false, err
+	}
+	if !e.success() {
+		return false, e
+	}
+	err = json.Unmarshal(e.Response, &into)
+	if err != nil {
+		return true, err
+	}
+	return true, nil
 }

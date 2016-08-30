@@ -71,6 +71,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.destiny-cli.yaml)")
 	RootCmd.PersistentFlags().StringVarP(&apiKey, "key", "k", apiKey, "your API key (see: https://www.bungie.net/en/User/API)")
 	RootCmd.PersistentFlags().StringVarP(&platform, "platform", "p", platform, "platform to access the api for")
+	RootCmd.PersistentFlags().BoolVarP(&destiny.Debug, "debug", "d", destiny.Debug, "debug http requests")
 }
 
 func initConfig() {
