@@ -14,12 +14,26 @@
 
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"log"
+
+	"github.com/spf13/cobra"
+)
 
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
 	Use:   "search",
-	Short: "Search for destiny membership",
+	Short: "Search for an xbox live membership",
+	Long: `Search for an xbox live membership
+
+destiny-cli --platform [x|p] search <GamerTag>`,
+	Run: func(cmd *cobra.Command, args []string) {
+		membership, err := api.Memberships(args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+		jsonOut(membership)
+	},
 }
 
 func init() {

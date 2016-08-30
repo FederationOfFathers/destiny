@@ -16,13 +16,21 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"strings"
 
+	"github.com/FederationOfFathers/destiny"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
+
+var apiKey = os.Getenv("DESTINY_API_KEY")
+var platform = os.Getenv("DESTINY_API_PLATFORM")
+
+var api *destiny.Platform
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
@@ -35,9 +43,17 @@ var RootCmd = &cobra.Command{
 	https://www.bungie.net/en/Clan/Forum/39966
 
 	https://www.bungie.net/platform/destiny/help/`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		switch strings.ToLower(platform[:1]) {
+		case "x":
+			api = destiny.New(apiKey, nil).XBL()
+		case "p":
+			api = destiny.New(apiKey, nil).PSN()
+		default:
+			log.Fatal("Valid platforms are x[bl] or p[sn]")
+		}
+	},
 }
-
-var apiKey = os.Getenv("DESTINY_API_KEY")
 
 // Execute ...
 func Execute() {
@@ -48,9 +64,13 @@ func Execute() {
 }
 
 func init() {
+	if platform == "" {
+		platform = "xbl"
+	}
 	cobra.OnInitialize(initConfig)
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.destiny-cli.yaml)")
 	RootCmd.PersistentFlags().StringVarP(&apiKey, "key", "k", apiKey, "your API key (see: https://www.bungie.net/en/User/API)")
+	RootCmd.PersistentFlags().StringVarP(&platform, "platform", "p", platform, "platform to access the api for")
 }
 
 func initConfig() {
