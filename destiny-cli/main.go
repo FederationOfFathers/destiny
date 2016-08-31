@@ -1,3 +1,6 @@
+//go:generate /bin/bash -c "DESTINY_API_KEY=''; cd docs/md; go run main.go"
+//go:generate /bin/bash -c "DESTINY_API_KEY=''; cd docs/man; go run main.go"
+
 // Copyright © 2016 NAME HERE <EMAIL ADDRESS>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
