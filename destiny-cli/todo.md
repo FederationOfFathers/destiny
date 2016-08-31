@@ -24,7 +24,8 @@ x char stats {user} {character}               /Stats/{membershipType}/{destinyMe
   search {name}                               /SearchDestinyPlayer/{membershipType}/{displayName}/
 
   define advisors                             /Advisors/V2/
-  define manifests                            /Manifest
+  define manifest data                        /Manifest
+x define manifest download
   define item {type} {id}                     /Manifest/{type}/{id}/
   define grimoire                             /Vanguard/Grimoire/Definition/
   define stats                                /Stats/Definition/
