@@ -3,7 +3,7 @@ x acct summary {user}                         /{membershipType}/Account/{destiny
   acct advisors {user}                        /{membershipType}/Account/{destinyMembershipId}/Advisors/
   acct items {user}                           /{membershipType}/Account/{destinyMembershipId}/Items/
   acct grimoire {user}                        /Vanguard/Grimoire/{membershipType}/{membershipId}/
-  acct stats {user}                           /Stats/Account/{membershipType}/{destinyMembershipId}/
+x acct stats {user}                           /Stats/Account/{membershipType}/{destinyMembershipId}/
   acct triumphs {user}                        /{membershipType}/Account/{destinyMembershipId}/Triumphs/
 
   char activityhistory {user} {character}     /Stats/ActivityHistory/{membershipType}/{destinyMembershipId}/{characterId}/
