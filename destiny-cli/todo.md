@@ -13,8 +13,8 @@ x acct summary {user}                         /{membershipType}/Account/{destiny
   char inventory summary {user} character}    /{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/Inventory/Summary/
   char progression {user} {character}         /{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/Progression/
   char summary {user} {character}             /{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/
-  char agstats {user} {character}             /Stats/AggregateActivityStats/{membershipType}/{destinyMembershipId}/{characterId}/
-  char stats {user} {character}               /Stats/{membershipType}/{destinyMembershipId}/{characterId}/
+x char agstats {user} {character}             /Stats/AggregateActivityStats/{membershipType}/{destinyMembershipId}/{characterId}/
+x char stats {user} {character}               /Stats/{membershipType}/{destinyMembershipId}/{characterId}/
   char item get {user} {character} {item}     /{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/Inventory/{itemInstanceId}/
   char item ref {user} {character} {hash}     /{membershipType}/Account/{destinyMembershipId}/Character/{characterId}/ItemReference/{itemHash}/
   char exotic stats {user} {character}        /Stats/UniqueWeapons/{membershipType}/{destinyMembershipId}/{characterId}/
