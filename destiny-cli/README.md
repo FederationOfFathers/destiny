@@ -8,7 +8,7 @@ It builds on the Go API client (work in progress) [available on github](https://
 Status
 ======
 
-Working but not feature complete
+Working but not feature complete.  Documentation of commands and subcommands needs work.
 
 Installation
 ============
@@ -18,6 +18,8 @@ Currently requires a working [Go development setup](https://golang.org/doc/insta
 ```
 go get github.com/FederationOfFathers/destiny/destiny-cli
 ```
+
+You will need [a working API key](https://www.bungie.net/en/User/API) for the program to be of much use
 
 Documentation
 =============
