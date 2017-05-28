@@ -79,6 +79,10 @@ func New(APIKey string, httpClient *http.Client) *Client {
 	}
 }
 
+func (c *Client) GetAndUnwrap(url string, into interface{}) (bool, error) {
+	return c.getAndUnwrap(url, into)
+}
+
 func (c *Client) getAndUnwrap(url string, into interface{}) (bool, error) {
 	rsp, err := c.Get(url)
 	defer rsp.Body.Close()
@@ -95,6 +99,10 @@ func (c *Client) getAndUnwrap(url string, into interface{}) (bool, error) {
 		return false, e
 	}
 	return true, e.into(&into)
+}
+
+func (c *Client) GetAndUnwrapData(url string, into interface{}) (bool, error) {
+	return c.getAndUnwrapData(url, into)
 }
 
 func (c *Client) getAndUnwrapData(url string, into interface{}) (bool, error) {
